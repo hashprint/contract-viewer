@@ -1,6 +1,5 @@
 import { Contract } from './type'
 import config from 'lib/config'
-import FAKE from './api.json'
 
 export abstract class ApiResolver {
   abstract getContract(address: string): Promise<Contract>
@@ -22,27 +21,19 @@ export class EthereumApiResolver extends ApiResolver {
       }>
     }
 
-    const [contract] = FAKE.result
-    return Promise.resolve({
-      compilerVersion: contract.CompilerVersion,
-      sourceCode: contract.SourceCode,
-      name: contract.ContractName,
-      evmVersion: contract.EVMVersion,
-      abi: JSON.parse(contract.ABI),
-    })
-    // return fetch(
-    //   `${EthereumApiResolver.baseUrl}?module=contract&action=getsourcecode&address=${address}&apikey=${config.apiKeys.etherscan}`
-    // )
-    //   .then(res => res.json())
-    //   .then((res: Response) => {
-    //     const [contract] = res.result
-    //     return {
-    //       compilerVersion: contract.CompilerVersion,
-    //       sourceCode: contract.SourceCode,
-    //       name: contract.ContractName,
-    //       evmVersion: contract.EVMVersion,
-    //       abi: JSON.parse(contract.ABI),
-    //     }
-    //   })
+    return fetch(
+      `${EthereumApiResolver.baseUrl}?module=contract&action=getsourcecode&address=${address}&apikey=${config.apiKeys.etherscan}`
+    )
+      .then(res => res.json())
+      .then((res: Response) => {
+        const [contract] = res.result
+        return {
+          compilerVersion: contract.CompilerVersion,
+          sourceCode: contract.SourceCode,
+          name: contract.ContractName,
+          evmVersion: contract.EVMVersion,
+          abi: JSON.parse(contract.ABI),
+        }
+      })
   }
 }

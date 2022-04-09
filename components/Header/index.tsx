@@ -1,5 +1,7 @@
-import { Box, BoxProps, Container } from '@chakra-ui/react'
+import { Box, BoxProps, Container, HStack, DarkMode } from '@chakra-ui/react'
 import { LogoIcon, ViewerLogoIcon } from './LogoIcon'
+import { SearchBox } from './SearchBox'
+import NextLink from 'next/link'
 
 export const Header: React.FC<BoxProps> = props => {
   return (
@@ -8,18 +10,24 @@ export const Header: React.FC<BoxProps> = props => {
         maxW={'container.xl'}
         padding='0'
         display={'flex'}
-        alignItems={'center'}
+        justifyContent='space-between'
       >
-        <LogoIcon color='white' sx={{ width: '108px', height: '24px' }} />
-        <ViewerLogoIcon
-          color='white'
-          sx={{
-            width: '60px',
-            height: '16px',
-            marginBottom: '3px',
-            marginLeft: '12px',
-          }}
-        />
+        <NextLink href='/' passHref>
+          <HStack alignItems='center' cursor={'pointer'}>
+            <LogoIcon color='white' sx={{ width: '108px', height: '24px' }} />
+            <ViewerLogoIcon
+              color='white'
+              sx={{
+                width: '60px',
+                height: '16px',
+                marginBottom: '3px !important',
+                marginLeft: '12px',
+              }}
+            />
+          </HStack>
+        </NextLink>
+
+        <SearchBox />
       </Container>
     </Box>
   )
