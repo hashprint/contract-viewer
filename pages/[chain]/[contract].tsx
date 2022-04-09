@@ -1,6 +1,6 @@
 import { ContractStats } from 'components/ContractStats'
 import { PageContainer } from 'components/PageContainer'
-import { ApiResolver, EthereumApiResolver } from 'lib/service/api-resolver'
+import { createApiResolver } from 'lib/service/api-resolver'
 import { ContractResolver } from 'lib/service/contract-resolver'
 import { Contract } from 'lib/service/type'
 import Head from 'next/head'
@@ -10,17 +10,8 @@ import type {
   InferGetServerSidePropsType,
 } from 'next'
 import { ContractDisplayList } from 'components/ContractDisplayList'
-import { Heading, VStack, Text } from '@chakra-ui/react'
+import { Heading, VStack } from '@chakra-ui/react'
 import { ContractAddress } from 'components/ContractAddress'
-
-const getApiResolver = (chain: IChain): ApiResolver | null => {
-  switch (chain) {
-    case 'ethereum':
-      return new EthereumApiResolver()
-    default:
-      return null
-  }
-}
 
 export const getServerSideProps: GetServerSideProps<
   { contract: Contract; address: string },
@@ -29,7 +20,7 @@ export const getServerSideProps: GetServerSideProps<
   const chain = ctx.params!.chain
   const address = ctx.params!.contract
 
-  const apiResolver = getApiResolver(chain)
+  const apiResolver = createApiResolver(chain)
   if (!apiResolver) {
     return {
       notFound: true,

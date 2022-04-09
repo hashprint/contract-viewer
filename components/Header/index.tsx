@@ -1,4 +1,11 @@
-import { Box, BoxProps, Container, HStack, DarkMode } from '@chakra-ui/react'
+import {
+  Box,
+  BoxProps,
+  Container,
+  HStack,
+  DarkMode,
+  Show,
+} from '@chakra-ui/react'
 import { LogoIcon, ViewerLogoIcon } from './LogoIcon'
 import { SearchBox } from './SearchBox'
 import NextLink from 'next/link'
@@ -26,8 +33,9 @@ export const Header: React.FC<BoxProps> = props => {
             />
           </HStack>
         </NextLink>
-
-        <SearchBox />
+        <Show above='sm'>
+          <SearchBox />
+        </Show>
       </Container>
     </Box>
   )

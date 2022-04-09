@@ -20,8 +20,8 @@ export const ContractAddress: React.FC<{
   }, [])
 
   return (
-    <HStack spacing={2}>
-      <Text fontWeight={'medium'} color='gray.500'>
+    <HStack spacing={2} flexWrap='wrap'>
+      <Text fontWeight={'medium'} color='gray.500' fontSize={['sm', 'md']}>
         Address: {address}
       </Text>
 

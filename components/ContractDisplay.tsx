@@ -32,12 +32,14 @@ export const ContractDisplay: React.FC<Props> = props => {
         justify='space-between'
         cursor={'pointer'}
         onClick={() => setIsOpen(!isOpen)}
+        overflow='hidden'
       >
-        <HStack spacing='2'>
+        <HStack flex={'1 0 0'} spacing='2' overflow={'hidden'}>
           <Icon as={RiCodeSSlashLine} />
-          <Text>{props.name}</Text>
+          <Text isTruncated>{props.name}</Text>
         </HStack>
         <IconButton
+          flex='0 0 auto'
           aria-label='toggle'
           size={'sm'}
           icon={isOpen ? <RiArrowUpSLine /> : <RiArrowDownSLine />}

@@ -31,7 +31,7 @@ const Home: NextPage = () => {
           />
         </HStack>
 
-        <SearchBox color={'gray.900'} size='lg' w='container.lg' />
+        <SearchBox color={'gray.900'} size='lg' />
       </Center>
     </Container>
   )

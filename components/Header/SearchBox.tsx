@@ -6,6 +6,7 @@ import {
   InputLeftElement,
   InputRightElement,
   Select,
+  Spinner,
   useCallbackRef,
 } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
@@ -16,6 +17,8 @@ export const SearchBox: React.FC<InputGroupProps> = props => {
 
   const [chain, setChain] = useState('ethereum')
   const [address, setAddress] = useState('')
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const onChangeChain = useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -29,6 +32,7 @@ export const SearchBox: React.FC<InputGroupProps> = props => {
       if (event.key === 'Enter') {
         event.preventDefault()
         event.stopPropagation()
+        setIsLoading(true)
         router.push(`/${chain}/${address}`)
       }
     }
@@ -54,9 +58,16 @@ export const SearchBox: React.FC<InputGroupProps> = props => {
         type={'text'}
         placeholder='Contract Address'
         value={address}
+        disabled={isLoading}
         onChange={event => setAddress(event.target.value)}
         onKeyDown={onKeyDown}
       />
+
+      {isLoading && (
+        <InputRightElement border='none'>
+          <Spinner color='gray.400' />
+        </InputRightElement>
+      )}
     </InputGroup>
   )
 }
