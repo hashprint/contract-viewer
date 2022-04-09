@@ -1,4 +1,4 @@
-import { Contract } from './type'
+import { Contract, ContractSourceFile } from './type'
 import config from 'lib/config'
 
 export abstract class ApiResolver {
@@ -26,14 +26,41 @@ export class EthereumApiResolver extends ApiResolver {
     )
       .then(res => res.json())
       .then((res: Response) => {
+        if (res.status !== '1') throw new Error(res.result.toString())
+
         const [contract] = res.result
         return {
           compilerVersion: contract.CompilerVersion,
-          sourceCode: contract.SourceCode,
+          sourceCode: this.parseSourceCode(contract.SourceCode),
           name: contract.ContractName,
           evmVersion: contract.EVMVersion,
           abi: JSON.parse(contract.ABI),
         }
       })
+  }
+
+  private parseSourceCode(text: string): ContractSourceFile[] {
+    if (!text.startsWith('{{')) {
+      return [{ name: 'Contract.sol', content: text, language: 'Solidity' }]
+    }
+
+    const sourceCode: ContractSourceFile[] = []
+    try {
+      const json = JSON.parse(text.slice(1, -1)) as {
+        language: string
+        sources: Record<string, { content: string }>
+      }
+      for (const [name, value] of Object.entries(json.sources)) {
+        sourceCode.push({
+          language: json.language,
+          name,
+          content: value.content,
+        })
+      }
+    } catch {
+      //
+    }
+
+    return sourceCode
   }
 }

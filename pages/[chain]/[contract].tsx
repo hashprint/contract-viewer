@@ -1,4 +1,3 @@
-import { ContractDisplay } from 'components/ContractDisplay'
 import { ContractStats } from 'components/ContractStats'
 import { PageContainer } from 'components/PageContainer'
 import { ApiResolver, EthereumApiResolver } from 'lib/service/api-resolver'
@@ -10,6 +9,9 @@ import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
 } from 'next'
+import { ContractDisplayList } from 'components/ContractDisplayList'
+import { Heading, VStack, Text } from '@chakra-ui/react'
+import { ContractAddress } from 'components/ContractAddress'
 
 const getApiResolver = (chain: IChain): ApiResolver | null => {
   switch (chain) {
@@ -43,7 +45,8 @@ export const getServerSideProps: GetServerSideProps<
         address,
       },
     }
-  } catch {
+  } catch (error) {
+    console.error(error)
     return {
       notFound: true,
     }
@@ -62,14 +65,21 @@ const ContractPage: NextPage<
     <PageContainer>
       <Head>
         <title>
-          {contractStats.name} | Address {address} | hashprint
+          {contractStats.name} Contract Code | Address {address} | hashprint
         </title>
       </Head>
+
+      <VStack align={'flex-start'}>
+        <Heading>{contractStats.name} Contract Code</Heading>
+        <ContractAddress address={address} />
+      </VStack>
+
       <ContractStats
         {...contractStats}
         sx={{ marginBottom: 4, marginTop: 4 }}
       />
-      <ContractDisplay name={contractStats.name} sourceCode={sourceCode} />
+
+      <ContractDisplayList sourceFiles={sourceCode} />
     </PageContainer>
   )
 }

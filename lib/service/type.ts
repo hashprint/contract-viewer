@@ -1,5 +1,11 @@
+export interface ContractSourceFile {
+  language: string
+  name: string
+  content: string
+}
+
 export interface Contract {
-  sourceCode: string
+  sourceCode: ContractSourceFile[]
   name: string
   optimizationUsed?: string
   compilerVersion?: string
