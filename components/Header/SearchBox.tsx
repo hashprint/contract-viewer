@@ -144,7 +144,10 @@ export const SearchBox: React.FC<InputGroupProps> = props => {
   }
 
   return (
-    <Popover isOpen={!!address && (isSearching || contracts.length > 0)}>
+    <Popover
+      isOpen={!!address && (isSearching || contracts.length > 0)}
+      autoFocus={false}
+    >
       <PopoverAnchor>
         <InputGroup pos={'relative'} maxW='md' color='white' {...props}>
           <InputLeftElement width={'120px'} border={'none'}>
